@@ -7,27 +7,31 @@ const Header = (prpos) => {
   )
 }
 
-const Content = (prpos) => {
+const Part = (props) => {
   return(
     <>
       <p>
-        {prpos.part1} {prpos.exercises1}
-      </p>
-      <p>
-        {prpos.part2} {prpos.exercises2}
-      </p>
-      <p>
-        {prpos.part3} {prpos.exercises3}
+        {props.part} {props.exercise}
       </p>
     </>
   )
 }
 
-const Total = () => {
+const Content = (prpos) => {
   return(
     <>
-      <h1>{prpos.course}</h1>
-      <p>Number of exercises {exercises1 + exercises2 + exercises3}</p>
+      <Part part={ prpos.part1 } exercise={ prpos.exercises1 }/>
+      <Part part={ prpos.part2 } exercise={ prpos.exercises2 }/>
+      <Part part={ prpos.part3 } exercise={ prpos.exercises3 }/>
+    </>
+  )
+}
+
+const Total = (props) => {
+  return(
+    <>
+      <h1>{props.course}</h1>
+      <p>Number of exercises {props.exercises1 + props.exercises2 + props.exercises3}</p>
     </>
   )
 }
