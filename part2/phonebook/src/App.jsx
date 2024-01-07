@@ -1,24 +1,9 @@
 import React, { useState } from 'react'
+import Title from "./components/Title"
+import Persons from './components/Persons'
+import PersonForm from './components/PersonForm'
+import Filter from './components/Filter'
 
-const Title = ({ text }) => <h2>{text}</h2>
-
-const Number = ({ persons, search }) => {
-  const expression = new RegExp(`.*${search}.*`, 'i')
-  const filteredPersons = persons.filter(person => expression.test(person.name))
-
-  return(
-    <div>
-      {filteredPersons.map(person => {
-        return(
-          <div key={person.name}>
-            <span>{person.name} </span>
-            <span>{person.phone}</span>
-          </div>
-        )
-      })}
-    </div>
-  )
-}
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -55,23 +40,13 @@ const App = () => {
   return (
     <div>
       <Title text="Phonebook"></Title>
-      <div>
-        filter shown with <input value={search} onChange={handleSearchChange}/>
-      </div>
+      <Filter search={search} onChangeSearch={handleSearchChange}></Filter>
+      
       <Title text="Add a new"></Title>
-      <form onSubmit={addNumber}>
-        <div>
-          name: <input value={newName} onChange={handleNameChange}/>
-        </div>
-        <div>
-          number: <input value={newPhone} onChange={handlePhoneChange}/>
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <PersonForm addNumber={addNumber} name={newName} phone={newPhone} onChangeName={handleNameChange} onChangePhone={handlePhoneChange}></PersonForm>
+      
       <Title text="Numbers"></Title>
-      <Number persons={persons} search={search}></Number>
+      <Persons persons={persons} search={search}></Persons>
     </div>
   )
 }
