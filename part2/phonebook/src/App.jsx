@@ -43,7 +43,13 @@ const App = () => {
       <Filter search={search} onChangeSearch={handleSearchChange}></Filter>
       
       <Title text="Add a new"></Title>
-      <PersonForm addNumber={addNumber} name={newName} phone={newPhone} onChangeName={handleNameChange} onChangePhone={handlePhoneChange}></PersonForm>
+      <PersonForm 
+        addNumber={addNumber}
+        name={newName}
+        phone={newPhone}
+        onChangeName={handleNameChange}
+        onChangePhone={handlePhoneChange}>
+      </PersonForm>
       
       <Title text="Numbers"></Title>
       <Persons persons={persons} search={search}></Persons>
