@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 const Number = ({ persons }) => {
   return(
     <div>
-      {persons.map((person, i) => <div key={i}>{person.name}</div>)}
+      {persons.map(person => <div key={person.name}>{person.name}</div>)}
     </div>
   )
 }
@@ -17,8 +17,13 @@ const App = () => {
   const handleNameChange = (event) => setNewName(event.target.value)
 
   const addNumber = (event) => {
-    console.log(event);
     event.preventDefault()
+
+    if (persons.filter(person => person.name === newName).length > 0) {
+      alert(`${newName} is already added to phonebook`)
+      return
+    }
+
     const newPerson = {
       name: newName
     }
