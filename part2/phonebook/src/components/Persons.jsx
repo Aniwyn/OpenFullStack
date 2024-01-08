@@ -8,7 +8,7 @@ const Persons = ({ persons, search }) => {
           return(
             <div key={person.name}>
               <span>{person.name} </span>
-              <span>{person.phone}</span>
+              <span>{person.number}</span>
             </div>
           )
         })}

@@ -1,4 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+
+import axios from 'axios'
 import Title from "./components/Title"
 import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
@@ -6,18 +8,20 @@ import Filter from './components/Filter'
 
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', phone: '040-123456' },
-    { name: 'Ada Lovelace', phone: '39-44-5323523' },
-    { name: 'Dan Abramov', phone: '12-43-234345' },
-    { name: 'Mary Poppendieck', phone: '39-23-6423122' }
-  ])
+  const [ persons, setPersons ] = useState([])
   const [ newName, setNewName ] = useState('')
   const [ newPhone, setNewPhone ] = useState('')
   const [ search, setSearch ] = useState('')
 
+  useEffect(() => {
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => setPersons(response.data))
+      .catch(error => console.error(error))
+  }, [])
+
   const handleNameChange = (event) => setNewName(event.target.value)
-  const handlePhoneChange = (event) => setNewPhone(event.target.value)
+  const handleNumberChange = (event) => setNewPhone(event.target.value)
   const handleSearchChange = (event) => setSearch(event.target.value)
 
   const addNumber = (event) => {
@@ -30,7 +34,7 @@ const App = () => {
 
     const newPerson = {
       name: newName,
-      phone: newPhone
+      number: newPhone
     }
     setPersons([...persons, newPerson])
     setNewName('')
@@ -46,9 +50,9 @@ const App = () => {
       <PersonForm 
         addNumber={addNumber}
         name={newName}
-        phone={newPhone}
+        number={newPhone}
         onChangeName={handleNameChange}
-        onChangePhone={handlePhoneChange}>
+        onChangeNumber={handleNumberChange}>
       </PersonForm>
       
       <Title text="Numbers"></Title>
