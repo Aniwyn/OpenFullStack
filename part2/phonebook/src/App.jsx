@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 
-import axios from 'axios'
 import Title from "./components/Title"
 import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
@@ -47,6 +46,20 @@ const App = () => {
       })
   }
 
+  const deletePerson = (event) => {
+    event.preventDefault()
+    const idToDelete = event.target.attributes.idtodelete.value
+    const nameToDelete = event.target.attributes.nametodelete.value
+
+    const confirm = window.confirm(`Delete ${nameToDelete}`)
+
+    if (confirm) {
+      personService.deleteItem(idToDelete)
+      const newPersons = persons.filter(person => person.id !== idToDelete)
+      setPersons(newPersons)
+    }
+  }
+
   return (
     <div>
       <Title text="Phonebook"></Title>
@@ -62,7 +75,7 @@ const App = () => {
       </PersonForm>
       
       <Title text="Numbers"></Title>
-      <Persons persons={persons} search={search}></Persons>
+      <Persons persons={persons} search={search} deletePerson={deletePerson}></Persons>
     </div>
   )
 }

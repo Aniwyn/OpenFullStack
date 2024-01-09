@@ -1,4 +1,4 @@
-const Persons = ({ persons, search }) => {
+const Persons = ({ persons, search, deletePerson }) => {
     const expression = new RegExp(`.*${search}.*`, 'i')
     const filteredPersons = persons.filter(person => expression.test(person.name))
   
@@ -6,10 +6,16 @@ const Persons = ({ persons, search }) => {
       <div>
         {filteredPersons.map(person => {
           return(
-            <div key={person.name}>
+            <form
+              key={person.id} 
+              onSubmit={deletePerson} 
+              idtodelete={person.id} 
+              nametodelete={person.name}
+            >
               <span>{person.name} </span>
               <span>{person.number}</span>
-            </div>
+              <button type="onSubmit">delete</button>
+            </form>
           )
         })}
       </div>
