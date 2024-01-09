@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react'
 
 import axios from 'axios'
 import Countries from './components/Countries'
-import KEY from '../KEY'
-// const KEY = ''
+// import KEY from '../KEY'
+const KEY = ''
 
 
 function App() {

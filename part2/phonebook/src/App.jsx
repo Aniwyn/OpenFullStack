@@ -5,6 +5,7 @@ import Title from "./components/Title"
 import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
+import personService from './services/persons'
 
 
 const App = () => {
@@ -14,9 +15,9 @@ const App = () => {
   const [ search, setSearch ] = useState('')
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => setPersons(response.data))
+    personService
+      .getAll()
+      .then(persons => setPersons(persons))
       .catch(error => console.error(error))
   }, [])
 
@@ -36,9 +37,14 @@ const App = () => {
       name: newName,
       number: newPhone
     }
-    setPersons([...persons, newPerson])
-    setNewName('')
-    setNewPhone('')
+
+    personService
+      .create(newPerson)
+      .then(person => {
+        setPersons([...persons, person])
+        setNewName('')
+      setNewPhone('')
+      })
   }
 
   return (
