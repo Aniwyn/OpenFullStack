@@ -5,6 +5,7 @@ import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
 import personService from './services/persons'
+import Message from './components/Message'
 
 
 const App = () => {
@@ -12,6 +13,7 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newPhone, setNewPhone ] = useState('')
   const [ search, setSearch ] = useState('')
+  const [ message, setMessage ] = useState(null)
 
   useEffect(() => {
     personService
@@ -23,6 +25,13 @@ const App = () => {
   const handleNameChange = (event) => setNewName(event.target.value)
   const handleNumberChange = (event) => setNewPhone(event.target.value)
   const handleSearchChange = (event) => setSearch(event.target.value)
+
+  const newMessage = (message) => {
+    setMessage(message)
+    setTimeout(() => {
+      setMessage(null)
+    }, 3000)
+  }
 
   const addNumber = (event) => {
     event.preventDefault()
@@ -42,6 +51,7 @@ const App = () => {
               person => person.id !== newPerson.id ? person : newPerson
             )
             setPersons(newPersons)
+            newMessage(`Updated ${newPerson.name}`)
           })
       }
     } else {
@@ -57,6 +67,7 @@ const App = () => {
           setNewName('')
           setNewPhone('')
         })
+      newMessage(`Added ${newPerson.name}`)
     }
   }
 
@@ -77,6 +88,7 @@ const App = () => {
   return (
     <div>
       <Title text="Phonebook"></Title>
+      <Message message={message}/>
       <Filter search={search} onChangeSearch={handleSearchChange}></Filter>
       
       <Title text="Add a new"></Title>
