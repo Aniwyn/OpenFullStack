@@ -7,13 +7,13 @@ import Filter from './components/Filter'
 import personService from './services/persons'
 import Message from './components/Message'
 
-
 const App = () => {
   const [ persons, setPersons ] = useState([])
   const [ newName, setNewName ] = useState('')
   const [ newPhone, setNewPhone ] = useState('')
   const [ search, setSearch ] = useState('')
   const [ message, setMessage ] = useState(null)
+  const [ messageType, setMessageType ] = useState('')
 
   useEffect(() => {
     personService
@@ -26,10 +26,12 @@ const App = () => {
   const handleNumberChange = (event) => setNewPhone(event.target.value)
   const handleSearchChange = (event) => setSearch(event.target.value)
 
-  const newMessage = (message) => {
+  const newMessage = (message, type) => {
     setMessage(message)
+    setMessageType(type)
     setTimeout(() => {
       setMessage(null)
+      setMessageType('')
     }, 3000)
   }
 
@@ -51,7 +53,9 @@ const App = () => {
               person => person.id !== newPerson.id ? person : newPerson
             )
             setPersons(newPersons)
-            newMessage(`Updated ${newPerson.name}`)
+            setNewName('')
+            setNewPhone('')
+            newMessage(`Updated ${newPerson.name}`, 'message')
           })
       }
     } else {
@@ -67,7 +71,7 @@ const App = () => {
           setNewName('')
           setNewPhone('')
         })
-      newMessage(`Added ${newPerson.name}`)
+      newMessage(`Added ${newPerson.name}`, 'message')
     }
   }
 
@@ -79,16 +83,28 @@ const App = () => {
     const confirm = window.confirm(`Delete ${nameToDelete}`)
 
     if (confirm) {
-      personService.deleteItem(idToDelete)
-      const newPersons = persons.filter(person => person.id !== idToDelete)
-      setPersons(newPersons)
+      personService
+        .deleteItem(idToDelete)
+        .then(respose => {
+          newMessage(`Deleted ${nameToDelete}`, 'message')
+        })
+        .catch(error => {
+          newMessage(
+            `Information of ${nameToDelete} has already been remnoved from server`,
+            'error'
+          )
+        })
+        .finally(() => {
+          const newPersons = persons.filter(person => person.id !== idToDelete)
+          setPersons(newPersons)
+        })
     }
   }
 
   return (
     <div>
       <Title text="Phonebook"></Title>
-      <Message message={message}/>
+      <Message message={message} type={messageType}/>
       <Filter search={search} onChangeSearch={handleSearchChange}></Filter>
       
       <Title text="Add a new"></Title>
